@@ -4,7 +4,7 @@ export interface ChangeEvent {
     end?: number;
 }
 export declare class VirtualScrollComponent implements OnInit, OnChanges, OnDestroy {
-    private readonly element;
+    element: ElementRef;
     private readonly renderer;
     private readonly zone;
     items: any[];
@@ -40,7 +40,7 @@ export declare class VirtualScrollComponent implements OnInit, OnChanges, OnDest
     ngOnDestroy(): void;
     ngOnChanges(changes: SimpleChanges): void;
     refresh(): void;
-    scrollInto(item: any): void;
+    scrollInto(item: any, disableAnimation?: boolean): void;
     private addParentEventHandlers(parentScroll);
     private removeParentEventHandlers();
     private countItemsPerRow();

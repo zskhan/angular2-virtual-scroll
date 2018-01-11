@@ -63,8 +63,13 @@ var VirtualScrollComponent = (function () {
             requestAnimationFrame(function () { return _this.calculateItems(); });
         });
     };
-    VirtualScrollComponent.prototype.scrollInto = function (item) {
+    VirtualScrollComponent.prototype.scrollInto = function (item, disableAnimation) {
         var _this = this;
+        if (disableAnimation === void 0) { disableAnimation = false; }
+        var tempTime = this.scrollAnimationTime;
+        if (disableAnimation) {
+            this.scrollAnimationTime = 0;
+        }
         var el = this.parentScroll instanceof Window ? document.body : this.parentScroll || this.element.nativeElement;
         var offsetTop = this.getElementsOffset();
         var index = (this.items || []).indexOf(item);
@@ -88,6 +93,7 @@ var VirtualScrollComponent = (function () {
             if (_this.currentTween._object.scrollTop !== scrollTop) {
                 _this.zone.runOutsideAngular(function () {
                     requestAnimationFrame(animate);
+                    _this.scrollAnimationTime = tempTime;
                 });
             }
         };

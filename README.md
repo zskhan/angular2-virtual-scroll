@@ -60,14 +60,14 @@ alternatively
 **Step 1:** Install angular2-virtual-scroll
 
 ```sh
-npm install angular2-virtual-scroll --save
+npm install @zafarsaeedkhan/angular2-virtual-scroll --save
 ```
 
 **Step 2:** Import virtual scroll module into your app module
 
 ```ts
 ....
-import { VirtualScrollModule } from 'angular2-virtual-scroll';
+import { VirtualScrollModule } from '@zafarsaeedkhan/angular2-virtual-scroll';
 
 ....
 
@@ -255,7 +255,7 @@ The event `end` is fired every time scroll reaches at the end of the list. You c
 
 ```ts
 
-import { ChangeEvent } from '@angular2-virtual-scroll';
+import { ChangeEvent } from '@zafarsaeedkhan/angular2-virtual-scroll';
 ...
 
 @Component({
@@ -301,7 +301,7 @@ If virtual scroll is used within a dropdown or collapsible menu, virtual scroll 
 
 ```ts
 import { Component, ViewChild } from '@angular/core';
-import { VirtualScrollComponent } from 'angular2-virtual-scroll';
+import { VirtualScrollComponent } from '@zafarsaeedkhan/angular2-virtual-scroll';
 
 @Component({
     selector: 'rj-list',
@@ -331,7 +331,7 @@ You could use `scrollInto(item)` api to scroll into an item in the list. See bel
 
 ```ts
 import { Component, ViewChild } from '@angular/core';
-import { VirtualScrollComponent } from 'angular2-virtual-scroll';
+import { VirtualScrollComponent } from '@zafarsaeedkhan/angular2-virtual-scroll';
 
 @Component({
     selector: 'rj-list',

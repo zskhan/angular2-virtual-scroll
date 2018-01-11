@@ -132,7 +132,7 @@ export class VirtualScrollComponent implements OnInit, OnChanges, OnDestroy {
   private lastTopPadding = -1;
 
   constructor(
-    private readonly element: ElementRef,
+    public element: ElementRef,
     private readonly renderer: Renderer2,
     private readonly zone: NgZone) { }
 
@@ -165,7 +165,11 @@ export class VirtualScrollComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  scrollInto(item: any) {
+  scrollInto(item: any, disableAnimation: boolean = false) {
+    let tempTime = this.scrollAnimationTime;
+    if (disableAnimation) {
+        this.scrollAnimationTime = 0;
+    }
     let el: Element = this.parentScroll instanceof Window ? document.body : this.parentScroll || this.element.nativeElement;
     let offsetTop = this.getElementsOffset();
     let index: number = (this.items || []).indexOf(item);
@@ -190,6 +194,7 @@ export class VirtualScrollComponent implements OnInit, OnChanges, OnDestroy {
       if (this.currentTween._object.scrollTop !== scrollTop) {
         this.zone.runOutsideAngular(() => {
           requestAnimationFrame(animate);
+            this.scrollAnimationTime= tempTime;
         });
       }
     }
