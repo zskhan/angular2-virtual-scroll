@@ -28,7 +28,6 @@ export declare class VirtualScrollComponent implements OnInit, OnChanges, OnDest
     previousStart: number;
     previousEnd: number;
     startupLoop: boolean;
-    currentTween: any;
     private disposeScrollHandler;
     private disposeResizeHandler;
     /** Cache of the last scroll height to prevent setting CSS when not needed. */
@@ -40,7 +39,7 @@ export declare class VirtualScrollComponent implements OnInit, OnChanges, OnDest
     ngOnDestroy(): void;
     ngOnChanges(changes: SimpleChanges): void;
     refresh(): void;
-    scrollInto(item: any, disableAnimation?: boolean): void;
+    scrollInto(item: any): void;
     private addParentEventHandlers(parentScroll);
     private removeParentEventHandlers();
     private countItemsPerRow();

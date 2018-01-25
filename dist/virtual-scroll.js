@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var tween = require("@tweenjs/tween.js");
 var VirtualScrollComponent = (function () {
     function VirtualScrollComponent(element, renderer, zone) {
         var _this = this;
@@ -63,13 +62,7 @@ var VirtualScrollComponent = (function () {
             requestAnimationFrame(function () { return _this.calculateItems(); });
         });
     };
-    VirtualScrollComponent.prototype.scrollInto = function (item, disableAnimation) {
-        var _this = this;
-        if (disableAnimation === void 0) { disableAnimation = false; }
-        var tempTime = this.scrollAnimationTime;
-        if (disableAnimation) {
-            this.scrollAnimationTime = 0;
-        }
+    VirtualScrollComponent.prototype.scrollInto = function (item) {
         var el = this.parentScroll instanceof Window ? document.body : this.parentScroll || this.element.nativeElement;
         var offsetTop = this.getElementsOffset();
         var index = (this.items || []).indexOf(item);
@@ -78,26 +71,8 @@ var VirtualScrollComponent = (function () {
         var d = this.calculateDimensions();
         var scrollTop = (Math.floor(index / d.itemsPerRow) * d.childHeight)
             - (d.childHeight * Math.min(index, this.bufferAmount));
-        if (this.currentTween != undefined)
-            this.currentTween.stop();
-        this.currentTween = new tween.Tween({ scrollTop: el.scrollTop })
-            .to({ scrollTop: scrollTop }, this.scrollAnimationTime)
-            .easing(tween.Easing.Quadratic.Out)
-            .onUpdate(function (data) {
-            _this.renderer.setProperty(el, 'scrollTop', data.scrollTop);
-            _this.refresh();
-        })
-            .start();
-        var animate = function (time) {
-            _this.currentTween.update(time);
-            if (_this.currentTween._object.scrollTop !== scrollTop) {
-                _this.zone.runOutsideAngular(function () {
-                    requestAnimationFrame(animate);
-                    _this.scrollAnimationTime = tempTime;
-                });
-            }
-        };
-        animate();
+        this.renderer.setProperty(el, 'scrollTop', scrollTop);
+        this.refresh();
     };
     VirtualScrollComponent.prototype.addParentEventHandlers = function (parentScroll) {
         var _this = this;

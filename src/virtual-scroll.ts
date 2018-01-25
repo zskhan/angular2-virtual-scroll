@@ -16,8 +16,6 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import * as tween from '@tweenjs/tween.js'
-
 export interface ChangeEvent {
   start?: number;
   end?: number;
@@ -120,7 +118,6 @@ export class VirtualScrollComponent implements OnInit, OnChanges, OnDestroy {
   previousStart: number;
   previousEnd: number;
   startupLoop: boolean = true;
-  currentTween: any;
 
   private disposeScrollHandler: () => void | undefined;
   private disposeResizeHandler: () => void | undefined;
@@ -165,11 +162,7 @@ export class VirtualScrollComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  scrollInto(item: any, disableAnimation: boolean = false) {
-    let tempTime = this.scrollAnimationTime;
-    if (disableAnimation) {
-        this.scrollAnimationTime = 0;
-    }
+  scrollInto(item: any) {
     let el: Element = this.parentScroll instanceof Window ? document.body : this.parentScroll || this.element.nativeElement;
     let offsetTop = this.getElementsOffset();
     let index: number = (this.items || []).indexOf(item);
@@ -178,28 +171,8 @@ export class VirtualScrollComponent implements OnInit, OnChanges, OnDestroy {
     let d = this.calculateDimensions();
     let scrollTop = (Math.floor(index / d.itemsPerRow) * d.childHeight)
       - (d.childHeight * Math.min(index, this.bufferAmount));
-
-    if (this.currentTween != undefined) this.currentTween.stop()
-    this.currentTween = new tween.Tween({ scrollTop: el.scrollTop })
-      .to({ scrollTop }, this.scrollAnimationTime)
-      .easing(tween.Easing.Quadratic.Out)
-      .onUpdate((data) => {
-        this.renderer.setProperty(el, 'scrollTop', data.scrollTop);
-        this.refresh();
-      })
-      .start();
-
-    const animate = (time?) => {
-      this.currentTween.update(time);
-      if (this.currentTween._object.scrollTop !== scrollTop) {
-        this.zone.runOutsideAngular(() => {
-          requestAnimationFrame(animate);
-            this.scrollAnimationTime= tempTime;
-        });
-      }
-    }
-
-    animate()
+    this.renderer.setProperty(el, 'scrollTop', scrollTop);
+    this.refresh();
   }
 
   private addParentEventHandlers(parentScroll: Element | Window) {
